@@ -1,0 +1,468 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		E238F180155744CD0069E289 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E238F17F155744CD0069E289 /* UIKit.framework */; };
+		E238F182155744CD0069E289 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E238F181155744CD0069E289 /* Foundation.framework */; };
+		E238F184155744CD0069E289 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E238F183155744CD0069E289 /* CoreGraphics.framework */; };
+		E238F18A155744CD0069E289 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = E238F188155744CD0069E289 /* InfoPlist.strings */; };
+		E238F18C155744CD0069E289 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E238F18B155744CD0069E289 /* main.m */; };
+		E238F190155744CD0069E289 /* CRMAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E238F18F155744CD0069E289 /* CRMAppDelegate.m */; };
+		E238F1A5155781570069E289 /* CRMEntityReference.m in Sources */ = {isa = PBXBuildFile; fileRef = E238F1A4155781560069E289 /* CRMEntityReference.m */; };
+		E238F1CD155A27B70069E289 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E238F1CC155A27B70069E289 /* CoreFoundation.framework */; };
+		E238F1EE155C7FF30069E289 /* GDataXMLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = E238F1ED155C7FF30069E289 /* GDataXMLNode.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		E238F2071562E3670069E289 /* ASIAuthenticationDialog.m in Sources */ = {isa = PBXBuildFile; fileRef = E238F1F41562E3640069E289 /* ASIAuthenticationDialog.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		E238F2081562E3670069E289 /* ASIDataCompressor.m in Sources */ = {isa = PBXBuildFile; fileRef = E238F1F71562E3640069E289 /* ASIDataCompressor.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		E238F2091562E3670069E289 /* ASIDataDecompressor.m in Sources */ = {isa = PBXBuildFile; fileRef = E238F1F91562E3650069E289 /* ASIDataDecompressor.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		E238F20A1562E3670069E289 /* ASIDownloadCache.m in Sources */ = {isa = PBXBuildFile; fileRef = E238F1FB1562E3660069E289 /* ASIDownloadCache.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		E238F20B1562E3670069E289 /* ASIFormDataRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = E238F1FD1562E3660069E289 /* ASIFormDataRequest.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		E238F20C1562E3670069E289 /* ASIHTTPRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = E238F1FF1562E3670069E289 /* ASIHTTPRequest.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		E238F20D1562E3670069E289 /* ASIInputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = E238F2031562E3670069E289 /* ASIInputStream.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		E238F20E1562E3670069E289 /* ASINetworkQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = E238F2051562E3670069E289 /* ASINetworkQueue.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		E238F2121562E3C90069E289 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = E238F2111562E3C90069E289 /* Reachability.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		E238F2151562E4A60069E289 /* CRMOrgService.m in Sources */ = {isa = PBXBuildFile; fileRef = E238F2141562E4A60069E289 /* CRMOrgService.m */; };
+		E238F2171562E6010069E289 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E238F2161562E6010069E289 /* CFNetwork.framework */; };
+		E238F2191562E6300069E289 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E238F2181562E6300069E289 /* SystemConfiguration.framework */; };
+		E238F21B1562E6490069E289 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E238F21A1562E6490069E289 /* MobileCoreServices.framework */; };
+		E238F21D1562E6DD0069E289 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = E238F21C1562E6DD0069E289 /* libz.dylib */; };
+		E238F2201563D6C20069E289 /* CRMSecurityToken.m in Sources */ = {isa = PBXBuildFile; fileRef = E238F21F1563D6C20069E289 /* CRMSecurityToken.m */; };
+		E2B211FA1587B9F800C192EE /* CRMCondition.m in Sources */ = {isa = PBXBuildFile; fileRef = E2B211F91587B9F800C192EE /* CRMCondition.m */; };
+		E2B44461156E608E00DF156C /* CRMSignatureGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = E2B44460156E608E00DF156C /* CRMSignatureGenerator.m */; };
+		E2B44465156E61C200DF156C /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = E2B44464156E61C200DF156C /* NSData+Base64.m */; };
+		E2B44468156F2A3000DF156C /* CRMEntityMapper.m in Sources */ = {isa = PBXBuildFile; fileRef = E2B44467156F2A3000DF156C /* CRMEntityMapper.m */; };
+		E2B4446E15702A6C00DF156C /* CRMRequestBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = E2B4446D15702A6C00DF156C /* CRMRequestBuilder.m */; };
+		E2B444711570339F00DF156C /* CRMPost.m in Sources */ = {isa = PBXBuildFile; fileRef = E2B444701570339F00DF156C /* CRMPost.m */; };
+		E2B444751570348B00DF156C /* CRMTime.m in Sources */ = {isa = PBXBuildFile; fileRef = E2B444741570348B00DF156C /* CRMTime.m */; };
+		E2B4447815707D1700DF156C /* CRMResponseParser.m in Sources */ = {isa = PBXBuildFile; fileRef = E2B4447715707D1700DF156C /* CRMResponseParser.m */; };
+		E2B4447B1571332300DF156C /* CRMFault.m in Sources */ = {isa = PBXBuildFile; fileRef = E2B4447A1571332300DF156C /* CRMFault.m */; };
+		E2B445CE157D6E0E00DF156C /* CRMQueryBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = E2B445CD157D6E0E00DF156C /* CRMQueryBuilder.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		E238F17B155744CD0069E289 /* CRMProxyLib.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CRMProxyLib.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E238F17F155744CD0069E289 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		E238F181155744CD0069E289 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		E238F183155744CD0069E289 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		E238F187155744CD0069E289 /* CRMProxyLib-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "CRMProxyLib-Info.plist"; sourceTree = "<group>"; };
+		E238F189155744CD0069E289 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		E238F18B155744CD0069E289 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		E238F18D155744CD0069E289 /* CRMProxyLib-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CRMProxyLib-Prefix.pch"; sourceTree = "<group>"; };
+		E238F18E155744CD0069E289 /* CRMAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CRMAppDelegate.h; sourceTree = "<group>"; };
+		E238F18F155744CD0069E289 /* CRMAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CRMAppDelegate.m; sourceTree = "<group>"; };
+		E238F19C1557461D0069E289 /* CRMEntity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CRMEntity.h; sourceTree = "<group>"; };
+		E238F1A3155781560069E289 /* CRMEntityReference.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CRMEntityReference.h; sourceTree = "<group>"; };
+		E238F1A4155781560069E289 /* CRMEntityReference.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CRMEntityReference.m; sourceTree = "<group>"; };
+		E238F1CC155A27B70069E289 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
+		E238F1EC155C7FF30069E289 /* GDataXMLNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GDataXMLNode.h; sourceTree = "<group>"; };
+		E238F1ED155C7FF30069E289 /* GDataXMLNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GDataXMLNode.m; sourceTree = "<group>"; };
+		E238F1F31562E3640069E289 /* ASIAuthenticationDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASIAuthenticationDialog.h; sourceTree = "<group>"; };
+		E238F1F41562E3640069E289 /* ASIAuthenticationDialog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASIAuthenticationDialog.m; sourceTree = "<group>"; };
+		E238F1F51562E3640069E289 /* ASICacheDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASICacheDelegate.h; sourceTree = "<group>"; };
+		E238F1F61562E3640069E289 /* ASIDataCompressor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASIDataCompressor.h; sourceTree = "<group>"; };
+		E238F1F71562E3640069E289 /* ASIDataCompressor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASIDataCompressor.m; sourceTree = "<group>"; };
+		E238F1F81562E3650069E289 /* ASIDataDecompressor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASIDataDecompressor.h; sourceTree = "<group>"; };
+		E238F1F91562E3650069E289 /* ASIDataDecompressor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASIDataDecompressor.m; sourceTree = "<group>"; };
+		E238F1FA1562E3650069E289 /* ASIDownloadCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASIDownloadCache.h; sourceTree = "<group>"; };
+		E238F1FB1562E3660069E289 /* ASIDownloadCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASIDownloadCache.m; sourceTree = "<group>"; };
+		E238F1FC1562E3660069E289 /* ASIFormDataRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASIFormDataRequest.h; sourceTree = "<group>"; };
+		E238F1FD1562E3660069E289 /* ASIFormDataRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASIFormDataRequest.m; sourceTree = "<group>"; };
+		E238F1FE1562E3660069E289 /* ASIHTTPRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASIHTTPRequest.h; sourceTree = "<group>"; };
+		E238F1FF1562E3670069E289 /* ASIHTTPRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASIHTTPRequest.m; sourceTree = "<group>"; };
+		E238F2001562E3670069E289 /* ASIHTTPRequestConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASIHTTPRequestConfig.h; sourceTree = "<group>"; };
+		E238F2011562E3670069E289 /* ASIHTTPRequestDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASIHTTPRequestDelegate.h; sourceTree = "<group>"; };
+		E238F2021562E3670069E289 /* ASIInputStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASIInputStream.h; sourceTree = "<group>"; };
+		E238F2031562E3670069E289 /* ASIInputStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASIInputStream.m; sourceTree = "<group>"; };
+		E238F2041562E3670069E289 /* ASINetworkQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASINetworkQueue.h; sourceTree = "<group>"; };
+		E238F2051562E3670069E289 /* ASINetworkQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASINetworkQueue.m; sourceTree = "<group>"; };
+		E238F2061562E3670069E289 /* ASIProgressDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASIProgressDelegate.h; sourceTree = "<group>"; };
+		E238F2101562E3C90069E289 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
+		E238F2111562E3C90069E289 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
+		E238F2131562E4A50069E289 /* CRMOrgService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CRMOrgService.h; sourceTree = "<group>"; };
+		E238F2141562E4A60069E289 /* CRMOrgService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CRMOrgService.m; sourceTree = "<group>"; };
+		E238F2161562E6010069E289 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
+		E238F2181562E6300069E289 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		E238F21A1562E6490069E289 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
+		E238F21C1562E6DD0069E289 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		E238F21E1563D6C20069E289 /* CRMSecurityToken.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CRMSecurityToken.h; sourceTree = "<group>"; };
+		E238F21F1563D6C20069E289 /* CRMSecurityToken.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CRMSecurityToken.m; sourceTree = "<group>"; };
+		E2B211F81587B9F800C192EE /* CRMCondition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CRMCondition.h; sourceTree = "<group>"; };
+		E2B211F91587B9F800C192EE /* CRMCondition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CRMCondition.m; sourceTree = "<group>"; };
+		E2B4445F156E608E00DF156C /* CRMSignatureGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CRMSignatureGenerator.h; sourceTree = "<group>"; };
+		E2B44460156E608E00DF156C /* CRMSignatureGenerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CRMSignatureGenerator.m; sourceTree = "<group>"; };
+		E2B44463156E61C200DF156C /* NSData+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSData+Base64.h"; path = "../../source/sonoma/MSCRM Auth Example/NSData+Base64.h"; sourceTree = "<group>"; };
+		E2B44464156E61C200DF156C /* NSData+Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSData+Base64.m"; path = "../../source/sonoma/MSCRM Auth Example/NSData+Base64.m"; sourceTree = "<group>"; };
+		E2B44466156F2A3000DF156C /* CRMEntityMapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CRMEntityMapper.h; sourceTree = "<group>"; };
+		E2B44467156F2A3000DF156C /* CRMEntityMapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CRMEntityMapper.m; sourceTree = "<group>"; };
+		E2B4446C15702A6C00DF156C /* CRMRequestBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CRMRequestBuilder.h; sourceTree = "<group>"; };
+		E2B4446D15702A6C00DF156C /* CRMRequestBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CRMRequestBuilder.m; sourceTree = "<group>"; };
+		E2B4446F1570339F00DF156C /* CRMPost.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CRMPost.h; sourceTree = "<group>"; };
+		E2B444701570339F00DF156C /* CRMPost.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CRMPost.m; sourceTree = "<group>"; };
+		E2B444731570348B00DF156C /* CRMTime.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CRMTime.h; sourceTree = "<group>"; };
+		E2B444741570348B00DF156C /* CRMTime.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CRMTime.m; sourceTree = "<group>"; };
+		E2B4447615707D1700DF156C /* CRMResponseParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CRMResponseParser.h; sourceTree = "<group>"; };
+		E2B4447715707D1700DF156C /* CRMResponseParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CRMResponseParser.m; sourceTree = "<group>"; };
+		E2B444791571332300DF156C /* CRMFault.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CRMFault.h; sourceTree = "<group>"; };
+		E2B4447A1571332300DF156C /* CRMFault.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CRMFault.m; sourceTree = "<group>"; };
+		E2B445CC157D6E0D00DF156C /* CRMQueryBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CRMQueryBuilder.h; sourceTree = "<group>"; };
+		E2B445CD157D6E0E00DF156C /* CRMQueryBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CRMQueryBuilder.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		E238F178155744CD0069E289 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E238F21D1562E6DD0069E289 /* libz.dylib in Frameworks */,
+				E238F21B1562E6490069E289 /* MobileCoreServices.framework in Frameworks */,
+				E238F2191562E6300069E289 /* SystemConfiguration.framework in Frameworks */,
+				E238F2171562E6010069E289 /* CFNetwork.framework in Frameworks */,
+				E238F1CD155A27B70069E289 /* CoreFoundation.framework in Frameworks */,
+				E238F180155744CD0069E289 /* UIKit.framework in Frameworks */,
+				E238F182155744CD0069E289 /* Foundation.framework in Frameworks */,
+				E238F184155744CD0069E289 /* CoreGraphics.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		E238F170155744CD0069E289 = {
+			isa = PBXGroup;
+			children = (
+				E2B44463156E61C200DF156C /* NSData+Base64.h */,
+				E2B44464156E61C200DF156C /* NSData+Base64.m */,
+				E238F185155744CD0069E289 /* CRMProxyLib */,
+				E238F17E155744CD0069E289 /* Frameworks */,
+				E238F17C155744CD0069E289 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		E238F17C155744CD0069E289 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				E238F17B155744CD0069E289 /* CRMProxyLib.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		E238F17E155744CD0069E289 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				E238F21C1562E6DD0069E289 /* libz.dylib */,
+				E238F2161562E6010069E289 /* CFNetwork.framework */,
+				E238F1CC155A27B70069E289 /* CoreFoundation.framework */,
+				E238F183155744CD0069E289 /* CoreGraphics.framework */,
+				E238F181155744CD0069E289 /* Foundation.framework */,
+				E238F21A1562E6490069E289 /* MobileCoreServices.framework */,
+				E238F2181562E6300069E289 /* SystemConfiguration.framework */,
+				E238F17F155744CD0069E289 /* UIKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		E238F185155744CD0069E289 /* CRMProxyLib */ = {
+			isa = PBXGroup;
+			children = (
+				E238F20F1562E36E0069E289 /* ASI */,
+				E238F1EF155C802A0069E289 /* GDataXMLNode */,
+				E2B44472157033A700DF156C /* Model */,
+				E238F186155744CD0069E289 /* Supporting Files */,
+				E238F18E155744CD0069E289 /* CRMAppDelegate.h */,
+				E238F18F155744CD0069E289 /* CRMAppDelegate.m */,
+				E238F19C1557461D0069E289 /* CRMEntity.h */,
+				E2B44466156F2A3000DF156C /* CRMEntityMapper.h */,
+				E2B44467156F2A3000DF156C /* CRMEntityMapper.m */,
+				E2B211F81587B9F800C192EE /* CRMCondition.h */,
+				E2B211F91587B9F800C192EE /* CRMCondition.m */,
+				E238F1A3155781560069E289 /* CRMEntityReference.h */,
+				E238F1A4155781560069E289 /* CRMEntityReference.m */,
+				E2B444791571332300DF156C /* CRMFault.h */,
+				E2B4447A1571332300DF156C /* CRMFault.m */,
+				E238F2131562E4A50069E289 /* CRMOrgService.h */,
+				E238F2141562E4A60069E289 /* CRMOrgService.m */,
+				E2B445CC157D6E0D00DF156C /* CRMQueryBuilder.h */,
+				E2B445CD157D6E0E00DF156C /* CRMQueryBuilder.m */,
+				E2B4446C15702A6C00DF156C /* CRMRequestBuilder.h */,
+				E2B4446D15702A6C00DF156C /* CRMRequestBuilder.m */,
+				E2B4447615707D1700DF156C /* CRMResponseParser.h */,
+				E2B4447715707D1700DF156C /* CRMResponseParser.m */,
+				E238F21E1563D6C20069E289 /* CRMSecurityToken.h */,
+				E238F21F1563D6C20069E289 /* CRMSecurityToken.m */,
+				E2B4445F156E608E00DF156C /* CRMSignatureGenerator.h */,
+				E2B44460156E608E00DF156C /* CRMSignatureGenerator.m */,
+			);
+			path = CRMProxyLib;
+			sourceTree = "<group>";
+		};
+		E238F186155744CD0069E289 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				E238F187155744CD0069E289 /* CRMProxyLib-Info.plist */,
+				E238F188155744CD0069E289 /* InfoPlist.strings */,
+				E238F18B155744CD0069E289 /* main.m */,
+				E238F18D155744CD0069E289 /* CRMProxyLib-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		E238F1EF155C802A0069E289 /* GDataXMLNode */ = {
+			isa = PBXGroup;
+			children = (
+				E238F1EC155C7FF30069E289 /* GDataXMLNode.h */,
+				E238F1ED155C7FF30069E289 /* GDataXMLNode.m */,
+			);
+			name = GDataXMLNode;
+			sourceTree = "<group>";
+		};
+		E238F20F1562E36E0069E289 /* ASI */ = {
+			isa = PBXGroup;
+			children = (
+				E238F1F31562E3640069E289 /* ASIAuthenticationDialog.h */,
+				E238F1F41562E3640069E289 /* ASIAuthenticationDialog.m */,
+				E238F1F51562E3640069E289 /* ASICacheDelegate.h */,
+				E238F1F61562E3640069E289 /* ASIDataCompressor.h */,
+				E238F1F71562E3640069E289 /* ASIDataCompressor.m */,
+				E238F1F81562E3650069E289 /* ASIDataDecompressor.h */,
+				E238F1F91562E3650069E289 /* ASIDataDecompressor.m */,
+				E238F1FA1562E3650069E289 /* ASIDownloadCache.h */,
+				E238F1FB1562E3660069E289 /* ASIDownloadCache.m */,
+				E238F1FC1562E3660069E289 /* ASIFormDataRequest.h */,
+				E238F1FD1562E3660069E289 /* ASIFormDataRequest.m */,
+				E238F1FE1562E3660069E289 /* ASIHTTPRequest.h */,
+				E238F1FF1562E3670069E289 /* ASIHTTPRequest.m */,
+				E238F2001562E3670069E289 /* ASIHTTPRequestConfig.h */,
+				E238F2011562E3670069E289 /* ASIHTTPRequestDelegate.h */,
+				E238F2021562E3670069E289 /* ASIInputStream.h */,
+				E238F2031562E3670069E289 /* ASIInputStream.m */,
+				E238F2041562E3670069E289 /* ASINetworkQueue.h */,
+				E238F2051562E3670069E289 /* ASINetworkQueue.m */,
+				E238F2061562E3670069E289 /* ASIProgressDelegate.h */,
+				E238F2101562E3C90069E289 /* Reachability.h */,
+				E238F2111562E3C90069E289 /* Reachability.m */,
+			);
+			name = ASI;
+			sourceTree = "<group>";
+		};
+		E2B44472157033A700DF156C /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				E2B4446F1570339F00DF156C /* CRMPost.h */,
+				E2B444701570339F00DF156C /* CRMPost.m */,
+				E2B444731570348B00DF156C /* CRMTime.h */,
+				E2B444741570348B00DF156C /* CRMTime.m */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		E238F17A155744CD0069E289 /* CRMProxyLib */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E238F193155744CD0069E289 /* Build configuration list for PBXNativeTarget "CRMProxyLib" */;
+			buildPhases = (
+				E238F177155744CD0069E289 /* Sources */,
+				E238F178155744CD0069E289 /* Frameworks */,
+				E238F179155744CD0069E289 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = CRMProxyLib;
+			productName = CRMProxyLib;
+			productReference = E238F17B155744CD0069E289 /* CRMProxyLib.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		E238F172155744CD0069E289 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+			};
+			buildConfigurationList = E238F175155744CD0069E289 /* Build configuration list for PBXProject "CRMProxyLib" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = E238F170155744CD0069E289;
+			productRefGroup = E238F17C155744CD0069E289 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				E238F17A155744CD0069E289 /* CRMProxyLib */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		E238F179155744CD0069E289 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E238F18A155744CD0069E289 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		E238F177155744CD0069E289 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E238F18C155744CD0069E289 /* main.m in Sources */,
+				E238F190155744CD0069E289 /* CRMAppDelegate.m in Sources */,
+				E238F1A5155781570069E289 /* CRMEntityReference.m in Sources */,
+				E238F1EE155C7FF30069E289 /* GDataXMLNode.m in Sources */,
+				E238F2071562E3670069E289 /* ASIAuthenticationDialog.m in Sources */,
+				E238F2081562E3670069E289 /* ASIDataCompressor.m in Sources */,
+				E238F2091562E3670069E289 /* ASIDataDecompressor.m in Sources */,
+				E238F20A1562E3670069E289 /* ASIDownloadCache.m in Sources */,
+				E238F20B1562E3670069E289 /* ASIFormDataRequest.m in Sources */,
+				E238F20C1562E3670069E289 /* ASIHTTPRequest.m in Sources */,
+				E238F20D1562E3670069E289 /* ASIInputStream.m in Sources */,
+				E238F20E1562E3670069E289 /* ASINetworkQueue.m in Sources */,
+				E238F2121562E3C90069E289 /* Reachability.m in Sources */,
+				E238F2151562E4A60069E289 /* CRMOrgService.m in Sources */,
+				E238F2201563D6C20069E289 /* CRMSecurityToken.m in Sources */,
+				E2B44461156E608E00DF156C /* CRMSignatureGenerator.m in Sources */,
+				E2B44465156E61C200DF156C /* NSData+Base64.m in Sources */,
+				E2B44468156F2A3000DF156C /* CRMEntityMapper.m in Sources */,
+				E2B4446E15702A6C00DF156C /* CRMRequestBuilder.m in Sources */,
+				E2B444711570339F00DF156C /* CRMPost.m in Sources */,
+				E2B444751570348B00DF156C /* CRMTime.m in Sources */,
+				E2B4447815707D1700DF156C /* CRMResponseParser.m in Sources */,
+				E2B4447B1571332300DF156C /* CRMFault.m in Sources */,
+				E2B445CE157D6E0E00DF156C /* CRMQueryBuilder.m in Sources */,
+				E2B211FA1587B9F800C192EE /* CRMCondition.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		E238F188155744CD0069E289 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E238F189155744CD0069E289 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		E238F191155744CD0069E289 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		E238F192155744CD0069E289 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		E238F194155744CD0069E289 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
+				CLANG_ENABLE_OBJC_ARC = NO;
+				CLANG_WARN_OBJCPP_ARC_ABI = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "CRMProxyLib/CRMProxyLib-Prefix.pch";
+				HEADER_SEARCH_PATHS = /usr/include/libxml2;
+				INFOPLIST_FILE = "CRMProxyLib/CRMProxyLib-Info.plist";
+				OTHER_LDFLAGS = "-lxml2";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		E238F195155744CD0069E289 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
+				CLANG_ENABLE_OBJC_ARC = NO;
+				CLANG_WARN_OBJCPP_ARC_ABI = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "CRMProxyLib/CRMProxyLib-Prefix.pch";
+				HEADER_SEARCH_PATHS = /usr/include/libxml2;
+				INFOPLIST_FILE = "CRMProxyLib/CRMProxyLib-Info.plist";
+				OTHER_LDFLAGS = "-lxml2";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		E238F175155744CD0069E289 /* Build configuration list for PBXProject "CRMProxyLib" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E238F191155744CD0069E289 /* Debug */,
+				E238F192155744CD0069E289 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E238F193155744CD0069E289 /* Build configuration list for PBXNativeTarget "CRMProxyLib" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E238F194155744CD0069E289 /* Debug */,
+				E238F195155744CD0069E289 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = E238F172155744CD0069E289 /* Project object */;
+}
