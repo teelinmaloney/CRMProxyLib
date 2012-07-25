@@ -8,10 +8,15 @@
 
 #import <Foundation/Foundation.h>
 #import "CRMEntity.h"
+#import "GDataXMLNode.h"
 
 @interface CRMEntityMapper : NSObject
 
-- (NSString *) toXml:(id<CRMEntity>)model;
-- (id) fromXml:(NSString *)xml; 
+@property (nonatomic, strong) NSString *entityName;
+
++(NSString *)toXml:(id<CRMEntity>)model;
+
+-(id)initWithEntityName:(NSString *)entityName;
+-(id<CRMEntity>)fromFetchResultXml:(GDataXMLNode *)fetchResultXml;
 
 @end

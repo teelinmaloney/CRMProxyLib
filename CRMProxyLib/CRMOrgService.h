@@ -11,13 +11,13 @@
 
 @interface CRMOrgService : NSObject
 
-@property (nonatomic, strong) NSString* url;
+@property (nonatomic, strong) NSString* organizationServiceUrl;
+@property (nonatomic, strong) NSString* secureTokenServiceUrl;
 @property (nonatomic, strong) NSString* org;
 @property (nonatomic, strong) NSString* username;
 @property (nonatomic, strong) NSString* password;
 
-- (id) initWithUrl: (NSString *)url 
-      organization: (NSString *)org;
+- (id) initWithOrganizationServiceUrl:(NSString *)orgUrl andSecureTokenServiceUrl:(NSString *)stsUrl;
 
 - (id) execute: (NSString *) requestXml;
 
@@ -30,6 +30,6 @@
        entityId: (NSString *)entityId
      attributes: (NSArray *)attributes;
 
-- (NSArray *) retrieveMultiple: (NSString *)fetchXml;
+- (NSArray *) retrieveMultiple: (NSString *)fetchXml ofClassName:(NSString *)className;
 
 @end

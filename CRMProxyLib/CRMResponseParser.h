@@ -27,4 +27,8 @@
 
 -(NSArray *)parseRetrieveMultipleResponse:(NSString *)responseXml 
                                     error:(NSError **)error;
+
+-(NSArray *)parseFetchResponse:(NSString *)responseXml
+                  forClassName:(NSString *)className
+                         error:(NSError **)error;
 @end

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E206D65315BF66A400C43D76 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E206D65115BF66A400C43D76 /* SettingsViewController.m */; };
+		E206D65415BF66A400C43D76 /* SettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E206D65215BF66A400C43D76 /* SettingsViewController.xib */; };
 		E238F180155744CD0069E289 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E238F17F155744CD0069E289 /* UIKit.framework */; };
 		E238F182155744CD0069E289 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E238F181155744CD0069E289 /* Foundation.framework */; };
 		E238F184155744CD0069E289 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E238F183155744CD0069E289 /* CoreGraphics.framework */; };
@@ -44,6 +46,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		E206D65015BF66A400C43D76 /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SettingsViewController.h; path = UI/SettingsViewController.h; sourceTree = "<group>"; };
+		E206D65115BF66A400C43D76 /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SettingsViewController.m; path = UI/SettingsViewController.m; sourceTree = "<group>"; };
+		E206D65215BF66A400C43D76 /* SettingsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SettingsViewController.xib; path = UI/SettingsViewController.xib; sourceTree = "<group>"; };
 		E238F17B155744CD0069E289 /* CRMProxyLib.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CRMProxyLib.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E238F17F155744CD0069E289 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		E238F181155744CD0069E289 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -131,6 +136,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		E206D64C15BF634900C43D76 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				E206D65015BF66A400C43D76 /* SettingsViewController.h */,
+				E206D65115BF66A400C43D76 /* SettingsViewController.m */,
+				E206D65215BF66A400C43D76 /* SettingsViewController.xib */,
+			);
+			name = UI;
+			sourceTree = "<group>";
+		};
 		E238F170155744CD0069E289 = {
 			isa = PBXGroup;
 			children = (
@@ -168,6 +183,7 @@
 		E238F185155744CD0069E289 /* CRMProxyLib */ = {
 			isa = PBXGroup;
 			children = (
+				E206D64C15BF634900C43D76 /* UI */,
 				E238F20F1562E36E0069E289 /* ASI */,
 				E238F1EF155C802A0069E289 /* GDataXMLNode */,
 				E2B44472157033A700DF156C /* Model */,
@@ -310,6 +326,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E238F18A155744CD0069E289 /* InfoPlist.strings in Resources */,
+				E206D65415BF66A400C43D76 /* SettingsViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -345,6 +362,7 @@
 				E2B4447B1571332300DF156C /* CRMFault.m in Sources */,
 				E2B445CE157D6E0E00DF156C /* CRMQueryBuilder.m in Sources */,
 				E2B211FA1587B9F800C192EE /* CRMCondition.m in Sources */,
+				E206D65315BF66A400C43D76 /* SettingsViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

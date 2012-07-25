@@ -11,8 +11,12 @@
 #import "CRMSecurityToken.h"
 
 @interface CRMRequestBuilder : NSObject
-- (NSString *) buildCreateRequest:(id<CRMEntity>)model;
-- (NSString *) buildUpdateRequest:(id<CRMEntity>)model;
-- (NSString *) buildDeleteRequest:(NSString *)guid;
-- (NSString *) buildFetchRequest:(NSString *)fetchXml;
+@property (nonatomic, strong) NSString* organizationServiceUrl;
+@property (nonatomic, strong) NSString* secureTokenServiceUrl;
+- (NSString *)buildAuthRequestForUserName:(NSString *)userName andPassword:(NSString *)password;
+- (NSString *)buildCreateRequest:(id<CRMEntity>)model withSecurityToken:(CRMSecurityToken *)token;
+- (NSString *)buildUpdateRequest:(id<CRMEntity>)model withSecurityToken:(CRMSecurityToken *)token;
+- (NSString *)buildDeleteRequest:(NSString *)guid withSecurityToken:(CRMSecurityToken *)token;
+- (NSString *)buildFetchRequest:(NSString *)fetchXml withSecurityToken:(CRMSecurityToken *)token;
+- (NSString *)buildExecuteRequest:(NSString *)requestXml withSecurityToken:(CRMSecurityToken *)token;
 @end

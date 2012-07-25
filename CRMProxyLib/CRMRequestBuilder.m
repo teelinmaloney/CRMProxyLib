@@ -8,48 +8,148 @@
 
 #import "CRMRequestBuilder.h"
 #import "CRMEntityMapper.h"
+#import "CRMSignatureGenerator.h"
+#import "NSData+Base64.h"
 
-@interface CRMRequestBuilder() {
-@private
-    CRMEntityMapper *entityMapper_;
-}
+@interface CRMRequestBuilder()
+- (NSString *)buildSoapRequest:(NSString *)requestXml forAction:(NSString *)action withSecurityToken:(CRMSecurityToken *)token;
+- (NSString *)encodeFetch:(NSString *)fetchXml;
 @end
 
 @implementation CRMRequestBuilder
 
--(id) init
-{
-    self = [super init];
-    if (self) {
-        entityMapper_ = [[CRMEntityMapper alloc]init];
-    }
-    return self;
-}
+@synthesize organizationServiceUrl = _organizationServiceUrl;
+@synthesize secureTokenServiceUrl = _secureTokenServiceUrl;
 
-- (NSString *) buildCreateRequest:(id<CRMEntity>)model
+- (NSString *) buildAuthRequestForUserName:(NSString *)userName andPassword:(NSString *)password
 {
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"];
+    [formatter setTimeZone:[NSTimeZone timeZoneWithName:@"UTC"]];
+    
+    NSDate *now = [NSDate date];
+    NSDate *fiveMinutes = [NSDate dateWithTimeInterval:300.0 sinceDate:now];
+    
+    CFUUIDRef uuidRef = CFUUIDCreate(kCFAllocatorDefault);
+    NSString *uuid = (__bridge_transfer NSString *)CFUUIDCreateString(kCFAllocatorDefault, uuidRef);
+    CFRelease(uuidRef);
+    
     return [NSString stringWithFormat:@""
-            "<Create xmlns='http://schemas.microsoft.com/xrm/2011/Contracts/Services'>"
-            "%@"
-            "</Create>", [entityMapper_ toXml:model]];
+         "<s:Envelope xmlns:s='http://www.w3.org/2003/05/soap-envelope' xmlns:a='http://www.w3.org/2005/08/addressing' xmlns:u='http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd'><s:Header><a:Action s:mustUnderstand='1'>http://docs.oasis-open.org/ws-sx/ws-trust/200512/RST/Issue</a:Action>"
+         "<a:MessageID>urn:uuid:%@</a:MessageID>"
+         "<a:ReplyTo><a:Address>http://www.w3.org/2005/08/addressing/anonymous</a:Address></a:ReplyTo>"
+         "<a:To s:mustUnderstand='1'>%@</a:To>"
+         "<o:Security s:mustUnderstand='1' xmlns:o='http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd'>"
+         "<u:Timestamp u:Id='_0'>"
+         "<u:Created>%@</u:Created>"
+         "<u:Expires>%@</u:Expires>"
+         "</u:Timestamp>"
+         "<o:UsernameToken u:Id='uuid-%@'>"
+         "<o:Username>%@</o:Username>"
+         "<o:Password Type='http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText'>%@</o:Password>"
+         "</o:UsernameToken>"
+         "</o:Security>"
+         "</s:Header>"
+         "<s:Body>"
+         "<trust:RequestSecurityToken xmlns:trust='http://docs.oasis-open.org/ws-sx/ws-trust/200512'>"
+         "<wsp:AppliesTo xmlns:wsp='http://schemas.xmlsoap.org/ws/2004/09/policy'>"
+         "<a:EndpointReference>"
+         "<a:Address>%@</a:Address>"
+         "</a:EndpointReference></wsp:AppliesTo><trust:RequestType>http://docs.oasis-open.org/ws-sx/ws-trust/200512/Issue</trust:RequestType></trust:RequestSecurityToken></s:Body></s:Envelope>", 
+         uuid, [self secureTokenServiceUrl], [formatter stringFromDate:now], [formatter stringFromDate:fiveMinutes], 
+         uuid, userName, password, [self organizationServiceUrl]];
 }
 
-- (NSString *) buildUpdateRequest:(id<CRMEntity>)model
+- (NSString *) buildCreateRequest:(id<CRMEntity>)model withSecurityToken:(CRMSecurityToken *)token
 {
-    return [NSString stringWithFormat: @""
-            "<Update xmlns='http://schemas.microsoft.com/xrm/2011/Contracts/Services'>"
-            "%@"
-            "</Update>", [entityMapper_ toXml:model]];
+    NSString *requestXml = [NSString stringWithFormat:@""
+        "<Create xmlns='http://schemas.microsoft.com/xrm/2011/Contracts/Services'>"
+        "%@"
+        "</Create>", [CRMEntityMapper toXml:model]];
+    
+    return [self buildSoapRequest:requestXml forAction:@"Create" withSecurityToken:token];
 }
 
-- (NSString *) buildDeleteRequest:(NSString *)guid
+- (NSString *) buildUpdateRequest:(id<CRMEntity>)model withSecurityToken:(CRMSecurityToken *)token
+{
+    NSString *requestXml = [NSString stringWithFormat: @""
+        "<Update xmlns='http://schemas.microsoft.com/xrm/2011/Contracts/Services'>"
+        "%@"
+        "</Update>", [CRMEntityMapper toXml:model]];
+    
+    return [self buildSoapRequest:requestXml forAction:@"Update" withSecurityToken:token];
+}
+
+- (NSString *) buildDeleteRequest:(NSString *)guid withSecurityToken:(CRMSecurityToken *)token
 {
     return @"Not Implemented";
 }
 
-- (NSString *) buildFetchRequest:(NSString *)fetchXml
+- (NSString *) buildFetchRequest:(NSString *)fetchXml withSecurityToken:(CRMSecurityToken *)token
 {
-    return @"Not Implemented";
+    NSString *requestXml = [NSString stringWithFormat: @""
+            "<RetrieveMultiple xmlns='http://schemas.microsoft.com/xrm/2011/Contracts/Services'>"
+            "<query i:type='a:FetchExpression'"
+            " xmlns:i='http://www.w3.org/2001/XMLSchema-instance'"
+            " xmlns:a='http://schemas.microsoft.com/xrm/2011/Contracts'>"
+            "<a:Query>"
+            "%@"
+            "</a:Query>"
+            "</query>"
+            "</RetrieveMultiple>", [self encodeFetch:fetchXml]];
+    
+    return [self buildSoapRequest:requestXml forAction:@"RetrieveMultiple" withSecurityToken:token];
+}
+
+- (NSString *) buildExecuteRequest:(NSString *)requestXml withSecurityToken:(CRMSecurityToken *)token
+{
+    return [self buildSoapRequest:requestXml forAction:@"Execute" withSecurityToken:token];
+}
+
+- (NSString *) buildSoapRequest:(NSString *)requestXml forAction:(NSString *)action withSecurityToken:(CRMSecurityToken *)token
+{
+    CRMSignatureGenerator *generator = [[CRMSignatureGenerator alloc] init];
+    
+    NSString *timestamp = [[generator createTimestampNodeWithId:@"_0" atTime:[NSDate date]] XMLString];
+    
+    GDataXMLElement *signatureElement = [generator createSignatureNodeWithId:@"_0" 
+                                                            andReferenceData:[timestamp dataUsingEncoding:NSUTF8StringEncoding] 
+                                                                  andKeyData:[NSData dataFromBase64String:[token binarySecret]]
+                                                         andKeyInfoReference:[token securityTokenReference]];
+    
+    CFUUIDRef uuidRef = CFUUIDCreate(kCFAllocatorDefault);
+    NSString *uuid = (__bridge_transfer NSString *)CFUUIDCreateString(kCFAllocatorDefault, uuidRef);
+    CFRelease(uuidRef);
+    
+    NSString *soapRequestXml = [NSString stringWithFormat:@""
+        "<s:Envelope xmlns:s='http://www.w3.org/2003/05/soap-envelope'"
+        " xmlns:a='http://www.w3.org/2005/08/addressing'"
+        " xmlns:u='http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd'"
+        " xmlns:wsse='http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd'>"
+        "<s:Header>"
+        "<a:Action s:mustUnderstand='1'>http://schemas.microsoft.com/xrm/2011/Contracts/Services/IOrganizationService/%@</a:Action>"
+        "<a:MessageID>urn:uuid:%@</a:MessageID>"
+        "<a:ReplyTo><a:Address>http://www.w3.org/2005/08/addressing/anonymous</a:Address></a:ReplyTo>"
+        "<a:To s:mustUnderstand='1'>%@</a:To>"
+        "<o:Security s:mustUnderstand='1' xmlns:o='http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd'>"
+        "%@"
+        "%@"
+        "%@"
+        "</o:Security>"
+        "</s:Header>"
+        "<s:Body>"
+        "%@"
+        "</s:Body>"
+        "</s:Envelope>", action, uuid, [self organizationServiceUrl], timestamp, [token tokenXml], [signatureElement XMLString], requestXml];
+    
+    return soapRequestXml;
+}
+
+- (NSString *) encodeFetch:(NSString *)fetchXml
+{
+    fetchXml = [fetchXml stringByReplacingOccurrencesOfString:@"<" withString:@"&lt;"];
+    fetchXml = [fetchXml stringByReplacingOccurrencesOfString:@">" withString:@"&gt;"];
+    return fetchXml;
 }
 
 @end

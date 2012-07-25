@@ -11,25 +11,23 @@
 #import "CRMEntityReference.h"
 
 @interface CRMEntityMapper() {
-@private
-    NSArray *excludeAttributes_;
+    
 }
-- (NSString *)getAttributeXml:(id)model;
-- (NSString *)getAttributeValueXml:(id)value;
+
+@property (nonatomic, strong) NSMutableDictionary *attributeMetadata;
++ (NSDictionary *)getAttributesForModelName:(NSString *)modelName;
++ (NSString *)getAttributeXml:(id<CRMEntity>)model;
++ (NSString *)getAttributeValueXml:(id)value;
 @end
 
 @implementation CRMEntityMapper
 
--(id) init
-{
-    self = [super init];
-    if (self) {
-        excludeAttributes_ = [NSArray arrayWithObjects:@"id", @"entityName", nil];
-    }
-    return self;
-}
+@synthesize entityName = _entityName;
+@synthesize attributeMetadata = _attributeMetadata;
 
-- (NSString *) toXml:(id<CRMEntity>)model
+#pragma mark Class Methods
+
++(NSString *)toXml:(id<CRMEntity>)model
 {
     // !Format must stay exactly as is, any variations may cause the request to fail!
     NSString *entityXml = @"<entity xmlns:a='http://schemas.microsoft.com/xrm/2011/Contracts' xmlns:i='http://www.w3.org/2001/XMLSchema-instance'>"
@@ -51,28 +49,85 @@
     return [NSString stringWithFormat:entityXml, [self getAttributeXml:model], guid, model.entityName];
 }
 
-- (id) fromXml:(NSString *)xml
+#pragma mark Instance Methods
+
+-(id)init
 {
-    NSString *modelName = @""; // TODO: get from xml response
-    
-    id model = [[NSClassFromString(modelName) alloc]init];
+    return [self initWithEntityName:nil];
+}
+
+-(id)initWithEntityName:(NSString *)entityName
+{
+    self = [super init];
+    if (self) {
+        [self setEntityName:entityName];
+        [self setAttributeMetadata:[[CRMEntityMapper getAttributesForModelName:self.entityName]copy]];
+    }
+    return self;
+}
+
+-(id<CRMEntity>)fromFetchResultXml:(GDataXMLNode *)fetchResultNode
+{
+    id<CRMEntity> model = [[NSClassFromString(self.entityName)alloc]init];
     if (model == nil) {
         return nil;
     }
     
+    // Get attributes and values from xml
     NSMutableDictionary *attributes = [[NSMutableDictionary alloc]init];
-    for (NSString *key in attributes) {
-        [model setValue:[attributes valueForKey:key] forKey:key];
+    for (GDataXMLElement *attr in [fetchResultNode children]) {
+        NSArray *elementAttributes = [attr attributes];
+        if ([elementAttributes count] > 0) {
+            
+            // Entity Reference
+            GDataXMLNode *name = [attr attributeForName:@"name"];
+            GDataXMLNode *type = [attr attributeForName:@"type"];
+            if (name != nil && type != nil) {
+                CRMEntityReference *ref = [[CRMEntityReference alloc]init];
+                [ref setId:[attr stringValue]];
+                [ref setName:[name stringValue]];
+                [ref setLogicalName:[type stringValue]];
+                [attributes setValue:ref forKey:[attr name]];
+                continue;
+            }
+            
+            // DateTime
+            GDataXMLNode *date = [attr attributeForName:@"date"];
+            GDataXMLNode *time = [attr attributeForName:@"time"];
+            if (date != nil && time != nil) {
+                NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
+                [attributes setValue:[formatter dateFromString:[attr stringValue]] forKey:[attr name]];
+                continue;
+            }
+            
+        } else {
+            [attributes setValue:[attr stringValue] forKey:[attr name]];
+        }
     }
+    
+    for (NSString *attr in [self.attributeMetadata allKeys]) {
+        id value = [attributes valueForKey:attr];
+        if (value) {
+            [model setValue:value forKey:attr];
+        }
+    }
+    
+    NSLog(@"%@", [model id]);
     
     return model;
 }
 
-#pragma mark Private Methods - ToXml Helpers
+#pragma mark Private Class Methods
 
--(NSString *)getAttributeXml:(id)model
++(NSDictionary *)getAttributesForModelName:(NSString *)modelName
 {
-    NSMutableString *attributes = [[NSMutableString alloc]init];
+    NSMutableDictionary *attributes = [[NSMutableDictionary alloc]init];
+    NSArray *excludedAttributes = [[NSArray alloc]initWithObjects:@"id", @"entityName", nil];
+    
+    id<CRMEntity> model = [[NSClassFromString(modelName) alloc]init];
+    if (model == nil) {
+        return attributes;
+    }
     
     __unsafe_unretained Class type = [model class];
     unsigned int count;
@@ -85,22 +140,35 @@
         const char* propertyName = property_getName(prop);
         
         NSString *propertyNameString = [NSString stringWithCString:propertyName encoding:NSASCIIStringEncoding];
-        if ([excludeAttributes_ containsObject:propertyNameString]) {
+        if ([excludedAttributes containsObject:propertyNameString]) {
             continue;
         }
         
-        id value = [model valueForKey:propertyNameString];
-        if (value != nil) {
-            [attributes appendFormat:@"<a:KeyValuePairOfstringanyType><b:key>%@</b:key>%@</a:KeyValuePairOfstringanyType>", 
-             propertyNameString, [self getAttributeValueXml:value]];
-        }
+        [attributes setValue:[NSNull null] forKey:propertyNameString];
+        
     }
     free(props);
     
     return attributes;
 }
 
--(NSString *)getAttributeValueXml:(id)value
+#pragma mark Private Class Methods - ToXml Helpers
+
++(NSString *)getAttributeXml:(id<CRMEntity>)model
+{   
+    NSDictionary *attributes = [CRMEntityMapper getAttributesForModelName:[model entityName]];
+    NSMutableString *attributeXml = [[NSMutableString alloc]init];
+    for (NSString* attr in [attributes allKeys]) {
+        id value = [model valueForKey:attr];
+        if (value != nil) {
+            [attributeXml appendFormat:@"<a:KeyValuePairOfstringanyType><b:key>%@</b:key>%@</a:KeyValuePairOfstringanyType>", 
+             attr, [self getAttributeValueXml:value]];
+        }
+    }
+    return attributeXml;
+}
+
++(NSString *)getAttributeValueXml:(id)value
 {
     NSString *valueXml = @"<b:value i:type='c:%@' xmlns:c='http://www.w3.org/2001/XMLSchema'>%@</b:value>";
     if ([value isKindOfClass:[NSString class]]) {
