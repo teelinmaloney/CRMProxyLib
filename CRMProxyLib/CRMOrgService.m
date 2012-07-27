@@ -194,7 +194,7 @@
         NSLog(@"Error: %@", fault);
     }
     
-    return [parser_ parseFetchResponse:result forClassName:className error:&error];
+    return [parser_ parseRetrieveMultipleResponse:result forClassName:className error:&error];
 }
 
 @end

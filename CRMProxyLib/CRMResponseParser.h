@@ -13,22 +13,10 @@
 
 @interface CRMResponseParser : NSObject
 
--(CRMSecurityToken *)parseAuthenticationResponse:(NSString *)responseXml 
-                                           error:(NSError **)error;
-
--(CRMFault *)parseFault:(NSString *)responseXml 
-                  error:(NSError **)error;
-
--(NSString *)parseCreateResponse:(NSString *)responseXml 
-                           error:(NSError **)error;
-
--(id<CRMEntity>)parseRetrieveResponse:(NSString *)responseXml 
-                                  error:(NSError **)error;
-
--(NSArray *)parseRetrieveMultipleResponse:(NSString *)responseXml 
-                                    error:(NSError **)error;
-
--(NSArray *)parseFetchResponse:(NSString *)responseXml
-                  forClassName:(NSString *)className
-                         error:(NSError **)error;
+-(CRMSecurityToken *)parseAuthenticationResponse:(NSString *)responseXml error:(NSError **)error;
+-(CRMFault *)parseFault:(NSString *)responseXml error:(NSError **)error;
+-(NSString *)parseCreateResponse:(NSString *)responseXml error:(NSError **)error;
+-(id<CRMEntity>)parseRetrieveResponse:(NSString *)responseXml error:(NSError **)error;
+-(NSArray *)parseRetrieveMultipleResponse:(NSString *)responseXml forClassName:(NSString *)className error:(NSError **)error;
+-(NSArray *)parseFetchResponse:(NSString *)responseXml forClassName:(NSString *)className error:(NSError **)error;
 @end

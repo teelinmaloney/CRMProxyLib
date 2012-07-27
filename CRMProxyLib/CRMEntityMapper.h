@@ -14,9 +14,10 @@
 
 @property (nonatomic, strong) NSString *entityName;
 
-+(NSString *)toXml:(id<CRMEntity>)model;
++ (NSString *)toXml:(id<CRMEntity>)model;
 
--(id)initWithEntityName:(NSString *)entityName;
--(id<CRMEntity>)fromFetchResultXml:(GDataXMLNode *)fetchResultXml;
+- (id)initWithEntityName:(NSString *)entityName;
+- (id<CRMEntity>)fromEntityXml:(GDataXMLNode *)entityXml;
+- (id<CRMEntity>)fromFetchResultXml:(GDataXMLNode *)fetchResultXml;
 
 @end

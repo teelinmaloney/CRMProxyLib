@@ -15,6 +15,7 @@
     CRMOrgService *service_;
 }
 
+- (void)runTests;
 - (void)testCreate;
 - (void)testFetch;
 - (void)testWhoAmI;
@@ -72,13 +73,20 @@
     [service_ setPassword:[password text]];
     
     if ([[service_ username]length] != 0 && [[service_ password]length] != 0) {
-        [self testFetch];
+        [self runTests];
     } else {
         [error setText:@"Please enter username and password."];
     }
 }
 
 #pragma mark - Test Methods
+
+- (void)runTests
+{
+    //[self testCreate];
+    [self testFetch];
+    //[self testWhoAmI];
+}
 
 - (void)testCreate
 {
@@ -104,7 +112,8 @@
 	"</entity>"
     "</fetch>";
     
-    [service_ retrieveMultiple:fetch ofClassName:@"CRMPost"];    
+    NSArray *posts = [service_ retrieveMultiple:fetch ofClassName:@"CRMPost"];
+    NSLog(@"%d", [posts count]);
 }
 
 - (void)testWhoAmI

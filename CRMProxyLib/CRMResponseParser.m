@@ -197,7 +197,7 @@
     return nil;
 }
 
--(NSArray *)parseRetrieveMultipleResponse:(NSString *)responseXml error:(NSError **)error
+-(NSArray *)parseRetrieveMultipleResponse:(NSString *)responseXml forClassName:(NSString *)className error:(NSError **)error
 {
     GDataXMLDocument *doc = [[GDataXMLDocument alloc]initWithXMLString:responseXml options:0 error:&*error];
     if (*error) {
@@ -205,7 +205,27 @@
         return nil;
     }
     if (doc) {
-        //todo
+        NSArray *results = [doc nodesForXPath:@"//Services:RetrieveMultipleResponse/Services:RetrieveMultipleResult" namespaces:[self namespaces] error:&*error];
+        if (*error) {
+            NSLog(@"%@", [*error localizedDescription]);
+            return nil;
+        }
+        if ([results count] == 1) {
+            NSArray *entities = [[results objectAtIndex:0] nodesForXPath:@"Contracts:Entities/Contracts:Entity" namespaces:[self namespaces] error:&*error];
+            if (*error) {
+                NSLog(@"%@", [*error localizedDescription]);
+                return nil;
+            }
+            if ([entities count] > 0) {
+                CRMEntityMapper *entityMapper = [[CRMEntityMapper alloc]initWithEntityName:className];
+                NSMutableArray *ents = [[NSMutableArray alloc]init];
+                for (GDataXMLNode *node in entities) {
+                    id<CRMEntity> entity = [entityMapper fromEntityXml:node];
+                    [ents addObject:entity];
+                }
+                return ents;
+            }
+        }
     }
     return nil;
 }

@@ -13,7 +13,7 @@
 @interface CRMEntityMapper() {
     
 }
-
+@property (nonatomic, strong) NSDictionary *namespaces;
 @property (nonatomic, strong) NSMutableDictionary *attributeMetadata;
 + (NSDictionary *)getAttributesForModelName:(NSString *)modelName;
 + (NSString *)getAttributeXml:(id<CRMEntity>)model;
@@ -23,6 +23,7 @@
 @implementation CRMEntityMapper
 
 @synthesize entityName = _entityName;
+@synthesize namespaces = _namespaces;
 @synthesize attributeMetadata = _attributeMetadata;
 
 #pragma mark Class Methods
@@ -62,11 +63,19 @@
     if (self) {
         [self setEntityName:entityName];
         [self setAttributeMetadata:[[CRMEntityMapper getAttributesForModelName:self.entityName]copy]];
+        [self setNamespaces: [NSDictionary dictionaryWithObjectsAndKeys:
+                              @"http://www.w3.org/2001/04/xmlenc#", @"xenc",
+                              @"http://www.w3.org/2001/XMLSchema-instance", @"xsi",
+                              @"http://schemas.microsoft.com/xrm/2011/Contracts", @"Contracts", 
+                              @"http://schemas.microsoft.com/xrm/2011/Contracts/Services", @"Services",
+                              @"http://schemas.microsoft.com/crm/2007/WebServices", @"ws",
+                              @"http://schemas.datacontract.org/2004/07/System.Collections.Generic", @"c",
+                              nil]];
     }
     return self;
 }
 
--(id<CRMEntity>)fromFetchResultXml:(GDataXMLNode *)fetchResultNode
+- (id<CRMEntity>)fromFetchResultXml:(GDataXMLNode *)fetchResultNode
 {
     id<CRMEntity> model = [[NSClassFromString(self.entityName)alloc]init];
     if (model == nil) {
@@ -102,6 +111,67 @@
             
         } else {
             [attributes setValue:[attr stringValue] forKey:[attr name]];
+        }
+    }
+    
+    for (NSString *attr in [self.attributeMetadata allKeys]) {
+        id value = [attributes valueForKey:attr];
+        if (value) {
+            [model setValue:value forKey:attr];
+        }
+    }
+    
+    NSLog(@"%@", [model id]);
+    
+    return model;
+}
+
+- (id<CRMEntity>)fromEntityXml:(GDataXMLNode *)entityXml
+{
+    id<CRMEntity> model = [[NSClassFromString(self.entityName)alloc]init];
+    if (model == nil) {
+        return nil;
+    }
+    
+    NSError *error;
+    NSMutableDictionary *attributes = [[NSMutableDictionary alloc]init];
+    NSArray *keyValuePairs = [entityXml nodesForXPath:@"Contracts:Attributes/Contracts:KeyValuePairOfstringanyType" 
+                                           namespaces:[self namespaces] 
+                                                error:&error];
+    if ([keyValuePairs count] > 0) {
+        for (GDataXMLNode *attr in keyValuePairs) {
+            
+            NSString *key = [[[attr nodesForXPath:@"c:key" namespaces:[self namespaces] error:nil] objectAtIndex:0]stringValue];
+            
+            GDataXMLElement *value = [[attr nodesForXPath:@"c:value" namespaces:[self namespaces] error:nil] objectAtIndex:0];
+            if (value) {
+                GDataXMLNode *typeAttr = [value attributeForName:@"i:type"];
+                if (typeAttr) {
+                    NSString *type = [typeAttr stringValue];
+                    
+                    if ([type isEqualToString:@"b:EntityReference"]) {
+                        
+                        // It's possible that the child nodes aren't at the specified index
+                        CRMEntityReference *ref = [[CRMEntityReference alloc]init];
+                        [ref setId:[[value childAtIndex:0]stringValue]];
+                        [ref setLogicalName:[[value childAtIndex:1]stringValue]];
+                        [ref setName:[[value childAtIndex:2]stringValue]];
+                        [attributes setValue:ref forKey:key];
+                        continue;
+                        
+                    } else if ([type isEqualToString:@"d:dateTime"]) {
+                        
+                        NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
+                        [attributes setValue:[formatter dateFromString:[value stringValue]] forKey:key]; continue;
+                        
+                    } else {
+                        [attributes setValue:[value stringValue] forKey:key]; continue; 
+                    }
+                } else {
+                    [attributes setValue:[value stringValue] forKey:key]; continue;
+                }
+            }
+            
         }
     }
     
