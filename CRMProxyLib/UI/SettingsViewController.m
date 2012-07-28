@@ -9,6 +9,7 @@
 #import "SettingsViewController.h"
 #import "CRMOrgService.h"
 #import "CRMPost.h"
+#import "CRMTime.h"
 
 @interface SettingsViewController() {
 @private
@@ -17,7 +18,8 @@
 
 - (void)runTests;
 - (void)testCreate;
-- (void)testFetch;
+- (void)testRetrieve;
+- (void)testRetrieveMultiple;
 - (void)testWhoAmI;
 
 @end
@@ -84,7 +86,8 @@
 - (void)runTests
 {
     //[self testCreate];
-    [self testFetch];
+    [self testRetrieve];
+    //[self testRetrieveMultiple];
     //[self testWhoAmI];
 }
 
@@ -100,7 +103,14 @@
     NSLog(@"\n\nCreate Response: \n%@", response);
 }
 
-- (void)testFetch
+- (void)testRetrieve
+{
+    NSArray *attributes = [[NSArray alloc]initWithObjects:@"sonoma_name", nil];
+    CRMTime *time = [service_ retrieve:@"sonoma_time" byId:@"AF11EF47-D2D4-E111-AA06-0026B9F9E50C" forClassName:@"CRMTime" withAttributes:attributes];
+    NSLog(@"Id: %@, Detail: %@", [time id], [time sonoma_name]);
+}
+
+- (void)testRetrieveMultiple
 {
     NSString *fetch = @"<fetch mapping=\"logical\" count=\"5\">"
 	"<entity name=\"sonoma_time\">"
@@ -112,7 +122,7 @@
 	"</entity>"
     "</fetch>";
     
-    NSArray *posts = [service_ retrieveMultiple:fetch ofClassName:@"CRMTime"];
+    NSArray *posts = [service_ retrieveMultiple:fetch forClassName:@"CRMTime"];
     NSLog(@"%d", [posts count]);
 }
 

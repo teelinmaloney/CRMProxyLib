@@ -159,15 +159,37 @@
     
 }
 
--(id)retrieve:(NSString *)modelName
-   entityName:(NSString *)entityName 
-     entityId:(NSString *)entityId 
-   attributes:(NSArray *)attributes
+-(id<CRMEntity>)retrieve:(NSString *)entityName byId:(NSString *)entityId forClassName:(NSString *)className withAttributes:(NSArray *)attributes
 {
-    return nil;
+    CRMSecurityToken *token = [self authenticate];
+    
+    NSString *soapRequestXml = [requestBuilder_ buildRetrieveRequest:entityName entityId:entityId attributes:attributes withSecurityToken:token];
+    NSLog(@"%@", soapRequestXml);
+    
+    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:[self organizationServiceUrl]]];
+    [request addRequestHeader:@"Content-Type" value:@"application/soap+xml; charset=utf-8"];
+    [request setContentLength:[soapRequestXml length]];
+    [request setPostBody:[[soapRequestXml dataUsingEncoding:NSUTF8StringEncoding]mutableCopy]];
+    [request startSynchronous];
+    
+    if ([request error] != nil) {
+        NSLog(@"%@", [request error]);
+        return nil;
+    }
+    
+    NSError *error;
+    NSString *result = [request responseString];
+    
+    NSLog(@"\nResult: \n%@\n", result);
+    if ([result rangeOfString:@"s:Fault"].location != NSNotFound) {
+        id fault = [parser_ parseFault:result error:&error];
+        NSLog(@"Error: %@", fault);
+    }
+    
+    return [parser_ parseRetrieveResponse:result forClassName:className error:&error];
 }
 
--(NSArray *)retrieveMultiple:(NSString *)fetchXml ofClassName:(NSString *)className
+-(NSArray *)retrieveMultiple:(NSString *)fetchXml forClassName:(NSString *)className
 {
     CRMSecurityToken *token = [self authenticate];
     

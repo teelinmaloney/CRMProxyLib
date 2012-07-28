@@ -17,19 +17,15 @@
 @property (nonatomic, strong) NSString* username;
 @property (nonatomic, strong) NSString* password;
 
-- (id) initWithOrganizationServiceUrl:(NSString *)orgUrl andSecureTokenServiceUrl:(NSString *)stsUrl;
+- (id)initWithOrganizationServiceUrl:(NSString *)orgUrl andSecureTokenServiceUrl:(NSString *)stsUrl;
 
-- (id) execute: (NSString *) requestXml;
+- (id)execute:(NSString *)requestXml;
 
-- (NSString *) create: (id<CRMEntity>)model;
-- (void) update: (id<CRMEntity>)model;
-- (void) delete: (NSString *)entityId;
+- (NSString *)create:(id<CRMEntity>)model;
+- (void)update:(id<CRMEntity>)model;
+- (void)delete:(NSString *)entityId;
 
-- (id) retrieve: (NSString *)modelName
-     entityName: (NSString *)entityName 
-       entityId: (NSString *)entityId
-     attributes: (NSArray *)attributes;
-
-- (NSArray *) retrieveMultiple: (NSString *)fetchXml ofClassName:(NSString *)className;
+- (id<CRMEntity>)retrieve:(NSString *)entityName byId:(NSString *)entityId forClassName:(NSString *)className withAttributes:(NSArray *)attributes;
+- (NSArray *)retrieveMultiple:(NSString *)fetchXml forClassName:(NSString *)className;
 
 @end

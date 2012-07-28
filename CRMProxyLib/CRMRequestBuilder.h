@@ -18,5 +18,8 @@
 - (NSString *)buildUpdateRequest:(id<CRMEntity>)model withSecurityToken:(CRMSecurityToken *)token;
 - (NSString *)buildDeleteRequest:(NSString *)guid withSecurityToken:(CRMSecurityToken *)token;
 - (NSString *)buildFetchRequest:(NSString *)fetchXml withSecurityToken:(CRMSecurityToken *)token;
+- (NSString *)buildRetrieveRequest:(NSString *)entityName entityId:(NSString *)entityId withSecurityToken:(CRMSecurityToken *)token;
+- (NSString *)buildRetrieveRequest:(NSString *)entityName entityId:(NSString *)entityId attributes:(NSArray *)attributes 
+                 withSecurityToken:(CRMSecurityToken *)token;
 - (NSString *)buildExecuteRequest:(NSString *)requestXml withSecurityToken:(CRMSecurityToken *)token;
 @end

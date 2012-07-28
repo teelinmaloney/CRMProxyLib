@@ -106,6 +106,43 @@
     return [self buildSoapRequest:requestXml forAction:@"Execute" withSecurityToken:token];
 }
 
+- (NSString *) buildRetrieveRequest:(NSString *)entityName entityId:(NSString *)entityId withSecurityToken:(CRMSecurityToken *)token
+{
+    return [self buildRetrieveRequest:entityName entityId:entityId attributes:nil withSecurityToken:token];
+}
+
+- (NSString *) buildRetrieveRequest:(NSString *)entityName entityId:(NSString *)entityId attributes:(NSArray *)attributes 
+                  withSecurityToken:(CRMSecurityToken *)token
+{
+    NSMutableString *columnSetXml = [[NSMutableString alloc]init];
+    
+    if ([attributes count] == 0) {
+        [columnSetXml appendString:@"<a:AllColumns>true</a:AllColumns>"];
+    } else {
+        [columnSetXml appendString:@"<a:AllColumns>false</a:AllColumns>"];
+        [columnSetXml appendString:@"<a:Columns xmlns:b='http://schemas.microsoft.com/2003/10/Serialization/Arrays'>"];
+        for (NSString *attribute in attributes) {
+            [columnSetXml appendFormat:@"<b:string>%@</b:string>", attribute];    
+        }
+        [columnSetXml appendString:@"</a:Columns>"];
+    }
+    
+    NSString *requestXml = [NSString stringWithFormat:@""
+        "<Retrieve xmlns='http://schemas.microsoft.com/xrm/2011/Contracts/Services'>"
+        "<entityName>"
+        "%@"
+        "</entityName>"
+        "<id>"
+        "%@"
+        "</id>"
+        "<columnSet xmlns:a='http://schemas.microsoft.com/xrm/2011/Contracts' xmlns:i='http://www.w3.org/2001/XMLSchema-instance'>"
+        "%@"
+        "</columnSet>"
+        "</Retrieve>", entityName, entityId, columnSetXml];
+    
+    return [self buildSoapRequest:requestXml forAction:@"Retrieve" withSecurityToken:token];
+}
+
 - (NSString *) buildSoapRequest:(NSString *)requestXml forAction:(NSString *)action withSecurityToken:(CRMSecurityToken *)token
 {
     CRMSignatureGenerator *generator = [[CRMSignatureGenerator alloc] init];

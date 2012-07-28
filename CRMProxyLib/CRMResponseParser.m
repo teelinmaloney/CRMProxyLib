@@ -12,9 +12,6 @@
 
 @interface CRMResponseParser() {}
 @property (nonatomic, strong) NSDictionary *namespaces;
-
-- (id<CRMEntity>)parseEntity:(NSString *)entityXml error:(NSError **)error;
-- (id)parseValue:(NSString *)valueXml;
 - (NSString *)decodeXml:(NSString *)value;
 - (NSString *)formatResultSetXml:(NSString *)xml;
 - (NSDictionary *)getAttributesFromXmlNode:(GDataXMLNode *)node;
@@ -175,25 +172,25 @@
     return nil;
 }
 
--(id<CRMEntity>)parseRetrieveResponse:(NSString *)responseXml error:(NSError **)error
+-(id<CRMEntity>)parseRetrieveResponse:(NSString *)responseXml forClassName:(NSString *)className error:(NSError **)error
 {
-    GDataXMLDocument *doc = [[GDataXMLDocument alloc] initWithXMLString:responseXml options:0 error:&*error];
+    GDataXMLDocument *doc = [[GDataXMLDocument alloc]initWithXMLString:responseXml options:0 error:&*error];
     if (*error) {
-        NSLog(@"\nError parsing response XML: %@", [*error localizedDescription]);
+        NSLog(@"%@", [*error localizedDescription]);
         return nil;
     }
-    
     if (doc) {
-        NSArray *entities = [doc nodesForXPath:@"s:Envelope/s:Body/RetrieveResponse/RetrieveResult" namespaces:[self namespaces] error:&*error];
+        NSArray *results = [doc nodesForXPath:@"//Services:RetrieveResponse/Services:RetrieveResult" namespaces:[self namespaces] error:&*error];
         if (*error) {
             NSLog(@"%@", [*error localizedDescription]);
             return nil;
         }
-        if ([entities count] == 1) {
-            return [self parseEntity:[[entities objectAtIndex:0]stringValue] error:&*error];
+        if ([results count] == 1) {
+            CRMEntityMapper *entityMapper = [[CRMEntityMapper alloc]initWithEntityName:className];
+            id<CRMEntity> entity = [entityMapper fromEntityXml:[results objectAtIndex:0]];
+            return entity;
         }
     }
-    
     return nil;
 }
 
@@ -271,73 +268,6 @@
 {
     NSRegularExpression *regex = [[NSRegularExpression alloc]initWithPattern:@"((?<==)')|('(?=\\s+))|('(?=>))" options:0 error:NULL];
     return [regex stringByReplacingMatchesInString:xml options:0 range:NSMakeRange(0, [xml length]) withTemplate:@"\""];
-}
-
--(id<CRMEntity>)parseEntity:(NSString *)entityXml error:(NSError **)error
-{
-    GDataXMLDocument *doc = [[GDataXMLDocument alloc]initWithXMLString:entityXml options:0 error:&*error];
-    if (*error) {
-        NSLog(@"%@", [*error localizedDescription]);
-        return nil;
-    }
-    
-    if (doc) {
-        NSString *entityName;
-        NSMutableDictionary *attributeValues = [[NSMutableDictionary alloc]init];
-        
-        NSArray *entityNames = [doc nodesForXPath:@"//a:EntityName::text()" error:&*error];
-        if (*error) {
-            NSLog(@"%@", [*error localizedDescription]);
-            return nil;
-        }
-        
-        if ([entityNames count] > 0) {
-            entityName = [entityNames objectAtIndex:0];
-        }
-        
-        id<CRMEntity> model = [[NSClassFromString(entityName) alloc]init];
-        if (model == nil) {
-            NSLog(@"Error: unable to create class for entity: %@", entityName);
-            return nil;
-        }
-        
-        NSArray *attributes = [doc nodesForXPath:@"//a:Attributes" namespaces:[self namespaces] error:&*error];
-        if (*error) {
-            NSLog(@"%@", [*error localizedDescription]);
-            return nil;
-        }
-        
-        if ([attributes count] > 0) {
-            for (id attrNode in [[attributes objectAtIndex:0]children]) {
-                
-                NSString *key;
-                NSString *type;
-                
-                NSArray *keys = [attrNode nodesForXPath:@"b:key" error:&*error];
-                if ([keys count] == 1) {
-                    key = [[keys objectAtIndex:0]stringValue];
-                }
-                
-                NSArray *values = [attrNode nodesForXPath:@"b:value" error:&*error];
-                if ([values count] == 1) {
-                    //type = [[[values objectAtIndex:0]attributeForName:@"i:type"]stringValue];
-                    NSString *valueXml = [[values objectAtIndex:0]XMLString];
-                    [attributeValues setValue:[self parseValue:valueXml] forKey:key];
-                }
-                
-            }
-        }
-        
-        
-        
-        return model;
-    }
-    return nil;
-}
-
--(id)parseValue:(NSString *)valueXml
-{
-    return nil;
 }
 
 -(NSString *)decodeXml:(NSString *)xml
