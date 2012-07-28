@@ -11,8 +11,9 @@
 #import "CRMEntityReference.h"
 
 @interface CRMEntityMapper() {
-    
+
 }
+@property (nonatomic, strong) NSDateFormatter *dateFormatter;
 @property (nonatomic, strong) NSDictionary *namespaces;
 @property (nonatomic, strong) NSMutableDictionary *attributeMetadata;
 + (NSDictionary *)getAttributesForModelName:(NSString *)modelName;
@@ -23,6 +24,7 @@
 @implementation CRMEntityMapper
 
 @synthesize entityName = _entityName;
+@synthesize dateFormatter = _dateFormatter;
 @synthesize namespaces = _namespaces;
 @synthesize attributeMetadata = _attributeMetadata;
 
@@ -63,6 +65,9 @@
     if (self) {
         [self setEntityName:entityName];
         [self setAttributeMetadata:[[CRMEntityMapper getAttributesForModelName:self.entityName]copy]];
+        [self setDateFormatter:[[NSDateFormatter alloc]init]];
+        [[self dateFormatter]setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss'Z'"];
+        
         [self setNamespaces: [NSDictionary dictionaryWithObjectsAndKeys:
                               @"http://www.w3.org/2001/04/xmlenc#", @"xenc",
                               @"http://www.w3.org/2001/XMLSchema-instance", @"xsi",
@@ -71,6 +76,7 @@
                               @"http://schemas.microsoft.com/crm/2007/WebServices", @"ws",
                               @"http://schemas.datacontract.org/2004/07/System.Collections.Generic", @"c",
                               nil]];
+        
     }
     return self;
 }
@@ -159,10 +165,30 @@
                         [attributes setValue:ref forKey:key];
                         continue;
                         
+                    } else if ([type isEqualToString:@"b:OptionSetValue"]) {
+                        
+                        NSNumber *val = [NSNumber numberWithInt:[[[value childAtIndex:0]stringValue]intValue]];
+                        [attributes setValue:val forKey:key]; continue;
+                        
+                    } else if ([type isEqualToString:@"d:int"]) {
+                        
+                        NSNumber *val = [NSNumber numberWithInt:[[value stringValue]intValue]];
+                        [attributes setValue:val forKey:key]; continue;
+                        
+                    } else if ([type isEqualToString:@"d:double"] || [type isEqualToString:@"d:decimal"]) {
+                        
+                        NSNumber *val = [NSNumber numberWithDouble:[[value stringValue]doubleValue]];
+                        [attributes setValue:val forKey:key]; continue;
+                        
+                    } else if ([type isEqualToString:@"d:boolean"]) {
+                        
+                        NSNumber *val = [NSNumber numberWithBool:[[value stringValue]boolValue]];
+                        [attributes setValue:val forKey:key]; continue;
+                        
                     } else if ([type isEqualToString:@"d:dateTime"]) {
                         
-                        NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
-                        [attributes setValue:[formatter dateFromString:[value stringValue]] forKey:key]; continue;
+                        NSDate *date = [[self dateFormatter] dateFromString:[value stringValue]];
+                        [attributes setValue:date forKey:key]; continue;
                         
                     } else {
                         [attributes setValue:[value stringValue] forKey:key]; continue; 

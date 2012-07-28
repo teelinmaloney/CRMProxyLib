@@ -103,16 +103,16 @@
 - (void)testFetch
 {
     NSString *fetch = @"<fetch mapping=\"logical\" count=\"5\">"
-	"<entity name=\"post\">"
-    "<attribute name=\"createdby\" />"
-    "<attribute name=\"createdon\" />"
-    "<attribute name=\"regardingobjectid\" />"
-    "<attribute name=\"text\" />"
+	"<entity name=\"sonoma_time\">"
+    "<all-attributes />"
     "<order attribute=\"createdon\" descending=\"true\" />"
+    "<filter type='and'>"
+    "<condition attribute='ownerid' operator='eq-userid' />"
+    "</filter>"
 	"</entity>"
     "</fetch>";
     
-    NSArray *posts = [service_ retrieveMultiple:fetch ofClassName:@"CRMPost"];
+    NSArray *posts = [service_ retrieveMultiple:fetch ofClassName:@"CRMTime"];
     NSLog(@"%d", [posts count]);
 }
 
