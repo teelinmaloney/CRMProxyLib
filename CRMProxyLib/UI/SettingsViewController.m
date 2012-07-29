@@ -18,6 +18,7 @@
 
 - (void)runTests;
 - (void)testCreate;
+- (void)testEntityMetadata;
 - (void)testRetrieve;
 - (void)testRetrieveMultiple;
 - (void)testWhoAmI;
@@ -86,9 +87,10 @@
 - (void)runTests
 {
     //[self testCreate];
-    [self testRetrieve];
+    //[self testRetrieve];
     //[self testRetrieveMultiple];
     //[self testWhoAmI];
+    [self testEntityMetadata];
 }
 
 - (void)testCreate
@@ -139,6 +141,37 @@
     
     NSString *response = [service_ execute:request];
     NSLog(@"\n\nWhoAmI Response: \n%@", response);
+}
+
+- (void)testEntityMetadata
+{
+    NSString *request = @"<Execute xmlns='http://schemas.microsoft.com/xrm/2011/Contracts/Services'>"
+    "<request i:type='b:RetrieveEntityRequest' xmlns:b='http://schemas.microsoft.com/xrm/2011/Contracts'"
+    " xmlns:i='http://www.w3.org/2001/XMLSchema-instance'>"
+    "<b:Parameters xmlns:d='http://schemas.datacontract.org/2004/07/System.Collections.Generic'>"
+    "  <b:KeyValuePairOfstringanyType>"
+    "    <d:key>LogicalName</d:key>"
+    "    <d:value xmlns:e='http://www.w3.org/2001/XMLSchema' i:type='e:string'>sonoma_time</d:value>"
+    "  </b:KeyValuePairOfstringanyType>"
+    "  <b:KeyValuePairOfstringanyType>"
+    "    <d:key>RetrieveAsIfPublished</d:key>"
+    "    <d:value xmlns:e='http://www.w3.org/2001/XMLSchema' i:type='e:boolean'>false</d:value>"
+    "  </b:KeyValuePairOfstringanyType>"
+    "  <b:KeyValuePairOfstringanyType>"
+    "    <d:key>EntityFilters</d:key>"
+    "    <d:value xmlns:m='http://schemas.microsoft.com/xrm/2011/Metadata' i:type='m:EntityFilters'>Entity Attributes</d:value>"
+    "  </b:KeyValuePairOfstringanyType>"
+    "  <b:KeyValuePairOfstringanyType>"
+    "    <d:key>MetadataId</d:key>"
+    "    <d:value xmlns:e='http://schemas.microsoft.com/2003/10/Serialization/' i:type='e:guid'>00000000-0000-0000-0000-000000000000</d:value>"
+    "  </b:KeyValuePairOfstringanyType>"
+    "</b:Parameters>"
+    "<b:RequestId i:nil='true'/>"
+    "<b:RequestName>RetrieveEntity</b:RequestName>"
+    "</request></Execute>";
+    
+    NSString *response = [service_ execute:request];
+    NSLog(@"\n\nRetrieve Entity Response: \n%@", response);    
 }
 
 @end
