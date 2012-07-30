@@ -186,7 +186,7 @@
             return nil;
         }
         if ([results count] == 1) {
-            CRMEntityMapper *entityMapper = [[CRMEntityMapper alloc]initWithEntityName:className];
+            CRMEntityMapper *entityMapper = [[CRMEntityMapper alloc]initWithClassName:className];
             id<CRMEntity> entity = [entityMapper fromEntityXml:[results objectAtIndex:0]];
             return entity;
         }
@@ -214,7 +214,7 @@
                 return nil;
             }
             if ([entities count] > 0) {
-                CRMEntityMapper *entityMapper = [[CRMEntityMapper alloc]initWithEntityName:className];
+                CRMEntityMapper *entityMapper = [[CRMEntityMapper alloc]initWithClassName:className];
                 NSMutableArray *ents = [[NSMutableArray alloc]init];
                 for (GDataXMLNode *node in entities) {
                     id<CRMEntity> entity = [entityMapper fromEntityXml:node];
@@ -250,7 +250,7 @@
             if (resultDoc) {
                 NSArray *entities = [resultDoc nodesForXPath:@"resultset/result" error:&*error];
                 if ([entities count] > 0) {
-                    CRMEntityMapper *entityMapper = [[CRMEntityMapper alloc]initWithEntityName:className];
+                    CRMEntityMapper *entityMapper = [[CRMEntityMapper alloc]initWithClassName:className];
                     NSMutableArray *ents = [[NSMutableArray alloc]init];
                     for (GDataXMLNode *node in entities) {
                         id<CRMEntity> entity = [entityMapper fromFetchResultXml:node];

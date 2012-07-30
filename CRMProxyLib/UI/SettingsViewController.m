@@ -7,6 +7,7 @@
 //
 
 #import "SettingsViewController.h"
+#import "CRMContact.h"
 #import "CRMOrgService.h"
 #import "CRMPost.h"
 #import "CRMTime.h"
@@ -33,8 +34,8 @@
     if (self) {
         // Custom initialization
         service_ = [[CRMOrgService alloc]
-            initWithOrganizationServiceUrl:@"https://grapevine.sonomapartners.com/XRMServices/2011/Organization.svc" 
-            andSecureTokenServiceUrl:@"https://federation.sonomapartners.com/adfs/services/trust/13/usernamemixed"];
+            initWithOrganizationServiceUrl:@"https://int.crmqa.sonomapartners.com/arwqaclient/XRMServices/2011/Organization.svc" 
+            andSecureTokenServiceUrl:@"https://federation.crmqa.sonomapartners.com/adfs/services/trust/13/usernamemixed"];
     }
     return self;
 }
@@ -86,22 +87,27 @@
 
 - (void)runTests
 {
-    //[self testCreate];
+    [self testCreate];
     //[self testRetrieve];
     //[self testRetrieveMultiple];
     //[self testWhoAmI];
-    [self testEntityMetadata];
+    //[self testEntityMetadata];
 }
 
 - (void)testCreate
 {
-    CRMPost *post = [[CRMPost alloc]init];
-    post.text = @"Test from OrgService";
-    post.regardingobjectid = [[CRMEntityReference alloc]
-                              initWithEntityName:@"systemuser" andId:@"FC6A0980-A1FF-DE11-A75B-00101826F7F4"];
-    post.source = [NSNumber numberWithInt:2];
+//    CRMPost *post = [[CRMPost alloc]init];
+//    post.text = @"Test from OrgService";
+//    post.regardingobjectid = [[CRMEntityReference alloc]
+//                              initWithEntityName:@"systemuser" andId:@"FC6A0980-A1FF-DE11-A75B-00101826F7F4"];
+//    post.source = [NSNumber numberWithInt:2];
+//    
+//    NSString *response = [service_ create:post];
+    CRMContact *contact = [[CRMContact alloc]init];
+    [contact setFirstname:@"Joe"];
+    [contact setLastname:@"Framework"];
     
-    NSString *response = [service_ create:post];
+    NSString *response = [service_ create:contact];
     NSLog(@"\n\nCreate Response: \n%@", response);
 }
 

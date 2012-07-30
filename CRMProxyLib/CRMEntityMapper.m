@@ -16,14 +16,14 @@
 @property (nonatomic, strong) NSDateFormatter *dateFormatter;
 @property (nonatomic, strong) NSDictionary *namespaces;
 @property (nonatomic, strong) NSMutableDictionary *attributeMetadata;
-+ (NSDictionary *)getAttributesForModelName:(NSString *)modelName;
++ (NSDictionary *)getAttributesForClassName:(NSString *)className;
 + (NSString *)getAttributeXml:(id<CRMEntity>)model;
 + (NSString *)getAttributeValueXml:(id)value;
 @end
 
 @implementation CRMEntityMapper
 
-@synthesize entityName = _entityName;
+@synthesize className = _className;
 @synthesize dateFormatter = _dateFormatter;
 @synthesize namespaces = _namespaces;
 @synthesize attributeMetadata = _attributeMetadata;
@@ -49,22 +49,27 @@
         guid = @"00000000-0000-0000-0000-000000000000";
     }
     
-    return [NSString stringWithFormat:entityXml, [self getAttributeXml:model], guid, model.entityName];
+    return [NSString stringWithFormat:entityXml, [self getAttributeXml:model], guid, [model entityName]];
 }
 
 #pragma mark Instance Methods
 
 -(id)init
 {
-    return [self initWithEntityName:nil];
+    return [self initWithClassName:nil];
 }
 
--(id)initWithEntityName:(NSString *)entityName
+-(id)initWithClassName:(NSString *)className
 {
     self = [super init];
     if (self) {
-        [self setEntityName:entityName];
-        [self setAttributeMetadata:[[CRMEntityMapper getAttributesForModelName:self.entityName]copy]];
+        
+        if ([className length] == 0) {
+            NSLog(@"Warning: Initializing CRMEntityMapper without 'className'."); 
+        }
+        
+        [self setClassName:className];
+        [self setAttributeMetadata:[[CRMEntityMapper getAttributesForClassName:className]copy]];
         [self setDateFormatter:[[NSDateFormatter alloc]init]];
         [[self dateFormatter]setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss'Z'"];
         
@@ -83,7 +88,7 @@
 
 - (id<CRMEntity>)fromFetchResultXml:(GDataXMLNode *)fetchResultNode
 {
-    id<CRMEntity> model = [[NSClassFromString(self.entityName)alloc]init];
+    id<CRMEntity> model = [[NSClassFromString([self className])alloc]init];
     if (model == nil) {
         return nil;
     }
@@ -134,7 +139,7 @@
 
 - (id<CRMEntity>)fromEntityXml:(GDataXMLNode *)entityXml
 {
-    id<CRMEntity> model = [[NSClassFromString(self.entityName)alloc]init];
+    id<CRMEntity> model = [[NSClassFromString([self className])alloc]init];
     if (model == nil) {
         return nil;
     }
@@ -215,12 +220,12 @@
 
 #pragma mark Private Class Methods
 
-+(NSDictionary *)getAttributesForModelName:(NSString *)modelName
++(NSDictionary *)getAttributesForClassName:(NSString *)className
 {
     NSMutableDictionary *attributes = [[NSMutableDictionary alloc]init];
     NSArray *excludedAttributes = [[NSArray alloc]initWithObjects:@"id", @"entityName", nil];
     
-    id<CRMEntity> model = [[NSClassFromString(modelName) alloc]init];
+    id<CRMEntity> model = [[NSClassFromString(className) alloc]init];
     if (model == nil) {
         return attributes;
     }
@@ -252,7 +257,12 @@
 
 +(NSString *)getAttributeXml:(id<CRMEntity>)model
 {   
-    NSDictionary *attributes = [CRMEntityMapper getAttributesForModelName:[model entityName]];
+    NSDictionary *attributes = [CRMEntityMapper getAttributesForClassName:NSStringFromClass([model class])];
+    if ([attributes count] == 0) {
+        NSLog(@"Warning: 0 attributes found for class '%@'.", NSStringFromClass([model class]));
+        return nil;
+    }
+    
     NSMutableString *attributeXml = [[NSMutableString alloc]init];
     for (NSString* attr in [attributes allKeys]) {
         id value = [model valueForKey:attr];
