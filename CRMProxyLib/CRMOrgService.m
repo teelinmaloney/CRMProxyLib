@@ -18,7 +18,7 @@
     CRMResponseParser *parser_;
 }
 
-- (CRMSecurityToken *) authenticate;
+- (CRMSecurityToken *)authenticate;
 
 @end
 
@@ -32,12 +32,12 @@
 
 #pragma mark Public methods
 
--(id)init
+- (id)init
 {
     return [self initWithOrganizationServiceUrl:nil andSecureTokenServiceUrl:nil];
 }
 
--(id)initWithOrganizationServiceUrl:(NSString *)orgUrl andSecureTokenServiceUrl:(NSString *)stsUrl
+- (id)initWithOrganizationServiceUrl:(NSString *)orgUrl andSecureTokenServiceUrl:(NSString *)stsUrl
 {
     self = [super init];
     if (self) {
@@ -55,7 +55,7 @@
     return self;
 }
 
--(CRMSecurityToken*)authenticate
+- (CRMSecurityToken*)authenticate
 {
     NSString *authRequestXml = [requestBuilder_ buildAuthRequestForUserName:_username andPassword:_password];
     
@@ -79,7 +79,7 @@
     return response;
 }
 
--(id)execute:(NSString *)requestXml
+- (id)execute:(NSString *)requestXml
 {
     CRMSecurityToken *token = [self authenticate];
     
@@ -99,7 +99,7 @@
     return [request responseString];
 }
 
--(NSString*)create:(id<CRMEntity>)model
+- (NSString*)create:(id<CRMEntity>)model
 {
     CRMSecurityToken *token = [self authenticate];
     
@@ -128,11 +128,12 @@
     return [parser_ parseCreateResponse:result error:&error];
 }
 
--(void)update:(id<CRMEntity>)model
+- (void)update:(id<CRMEntity>)model
 {
     CRMSecurityToken *token = [self authenticate];
     
     NSString *soapRequestXml = [requestBuilder_ buildUpdateRequest:model withSecurityToken:token];
+    NSLog(@"\nUpdate Request: \n%@\n\n", soapRequestXml);
     
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:[self organizationServiceUrl]]];
     [request addRequestHeader:@"Content-Type" value:@"application/soap+xml; charset=utf-8"];
@@ -144,7 +145,7 @@
         NSLog(@"%@", [request error]);
         return;
     }
-    // Not sure if update request returns a result?
+
     NSError *error;
     NSString *result = [request responseString];
     NSLog(@"\nUpdate Result: \n%@\n", result);
@@ -154,12 +155,34 @@
     }
 }
 
--(void)delete:(NSString *)entityId
+- (void)delete:(id<CRMEntity>)model
 {
+    CRMSecurityToken *token = [self authenticate];
     
+    NSString *soapRequestXml = [requestBuilder_ buildDeleteRequest:model withSecurityToken:token];
+    NSLog(@"\nDelete Request: \n%@\n\n", soapRequestXml);
+    
+    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:[self organizationServiceUrl]]];
+    [request addRequestHeader:@"Content-Type" value:@"application/soap+xml; charset=utf-8"];
+    [request setContentLength: [soapRequestXml length]];
+    [request setPostBody:[[soapRequestXml dataUsingEncoding:NSUTF8StringEncoding]mutableCopy]];
+    [request startSynchronous];
+    
+    if ([request error] != nil) {
+        NSLog(@"%@", [request error]);
+        return;
+    }
+    
+    NSError *error;
+    NSString *result = [request responseString];
+    NSLog(@"\nDelete Result: \n%@\n", result);
+    if ([result rangeOfString:@"s:Fault"].location != NSNotFound) {
+        id fault = [parser_ parseFault:result error:&error];
+        NSLog(@"Error: %@", fault);
+    }
 }
 
--(id<CRMEntity>)retrieve:(NSString *)entityName byId:(NSString *)entityId forClassName:(NSString *)className withAttributes:(NSArray *)attributes
+- (id<CRMEntity>)retrieve:(NSString *)entityName byId:(NSString *)entityId forClassName:(NSString *)className withAttributes:(NSArray *)attributes
 {
     CRMSecurityToken *token = [self authenticate];
     
@@ -189,7 +212,7 @@
     return [parser_ parseRetrieveResponse:result forClassName:className error:&error];
 }
 
--(NSArray *)retrieveMultiple:(NSString *)fetchXml forClassName:(NSString *)className
+- (NSArray *)retrieveMultiple:(NSString *)fetchXml forClassName:(NSString *)className
 {
     CRMSecurityToken *token = [self authenticate];
     

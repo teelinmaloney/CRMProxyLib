@@ -23,7 +23,7 @@
 
 - (NSString *)create:(id<CRMEntity>)model;
 - (void)update:(id<CRMEntity>)model;
-- (void)delete:(NSString *)entityId;
+- (void)delete:(id<CRMEntity>)model;
 
 - (id<CRMEntity>)retrieve:(NSString *)entityName byId:(NSString *)entityId forClassName:(NSString *)className withAttributes:(NSArray *)attributes;
 - (NSArray *)retrieveMultiple:(NSString *)fetchXml forClassName:(NSString *)className;

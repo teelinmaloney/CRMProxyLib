@@ -80,9 +80,15 @@
     return [self buildSoapRequest:requestXml forAction:@"Update" withSecurityToken:token];
 }
 
-- (NSString *) buildDeleteRequest:(NSString *)guid withSecurityToken:(CRMSecurityToken *)token
+- (NSString *) buildDeleteRequest:(id<CRMEntity>)model withSecurityToken:(CRMSecurityToken *)token
 {
-    return @"Not Implemented";
+    NSString *requestXml = [NSString stringWithFormat: @""
+        "<Delete xmlns='http://schemas.microsoft.com/xrm/2011/Contracts/Services'>"
+        "<entityName>%@</entityName>"
+        "<id>%@</id>"
+        "</Delete>", [model entityName], [model id]];
+    
+    return [self buildSoapRequest:requestXml forAction:@"Delete" withSecurityToken:token];
 }
 
 - (NSString *) buildFetchRequest:(NSString *)fetchXml withSecurityToken:(CRMSecurityToken *)token

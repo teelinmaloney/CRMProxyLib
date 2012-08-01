@@ -39,17 +39,12 @@
     "</a:Attributes>"
     "<a:EntityState i:nil='true'/>"
     "<a:FormattedValues xmlns:b='http://schemas.datacontract.org/2004/07/System.Collections.Generic'/>"
-    "<a:Id>%@</a:Id>"
+    "<a:Id>00000000-0000-0000-0000-000000000000</a:Id>"
     "<a:LogicalName>%@</a:LogicalName>"
     "<a:RelatedEntities xmlns:b='http://schemas.datacontract.org/2004/07/System.Collections.Generic'/>"
     "</entity>";
-    
-    NSString *guid = model.id;
-    if (!guid) {
-        guid = @"00000000-0000-0000-0000-000000000000";
-    }
-    
-    return [NSString stringWithFormat:entityXml, [self getAttributeXml:model], guid, [model entityName]];
+        
+    return [NSString stringWithFormat:entityXml, [self getAttributeXml:model], [model entityName]];
 }
 
 #pragma mark Instance Methods
@@ -277,11 +272,20 @@
 +(NSString *)getAttributeValueXml:(id)value
 {
     NSString *valueXml = @"<b:value i:type='c:%@' xmlns:c='http://www.w3.org/2001/XMLSchema'>%@</b:value>";
+    
     if ([value isKindOfClass:[NSString class]]) {
+        NSRegularExpression *guidRegex = [[NSRegularExpression alloc]initWithPattern:@"^\\w{8}-\\w{4}-\\w{4}-\\w{4}-\\w{12}$" options:0 error:nil];
+        if ([[guidRegex matchesInString:value options:0 range:NSMakeRange(0, [value length])]count] > 0) {
+            return [NSString stringWithFormat:@"<b:value i:type='c:guid' xmlns:c='http://schemas.microsoft.com/2003/10/Serialization/'>%@</b:value>", value];
+        }
         return [NSString stringWithFormat:valueXml, @"string", value];
-    } else if ([value isKindOfClass:[NSDate class]]) {
+    } 
+    
+    if ([value isKindOfClass:[NSDate class]]) {
         return [NSString stringWithFormat:valueXml, @"dateTime", value];
-    } else if ([value isKindOfClass:[NSNumber class]]) {
+    } 
+    
+    if ([value isKindOfClass:[NSNumber class]]) {
         CFNumberType type = CFNumberGetType((CFNumberRef)value);
         if (strcmp([(NSNumber*)value objCType], @encode(BOOL)) == 0) {
             return [NSString stringWithFormat:valueXml, @"boolean", ((int)value)];
@@ -304,17 +308,17 @@
             default:
                 return @"<b:value></b:value>";
         }
-    } else if ([value isKindOfClass:[CRMEntityReference class]]) {
+    } 
+    
+    if ([value isKindOfClass:[CRMEntityReference class]]) {
         return [NSString stringWithFormat:@""
                 "<b:value i:type='a:EntityReference'>"
                 "<a:Id>%@</a:Id>"
                 "<a:LogicalName>%@</a:LogicalName>"
                 "<a:Name i:nil='true'/>"
                 "</b:value>", 
-                ((CRMEntityReference*)value).id,
-                ((CRMEntityReference*)value).logicalName];
-    } else if ([value isKindOfClass:[Guid class]]) {
-        return [NSString stringWithFormat:valueXml, @"guid", value];
+                [((CRMEntityReference*)value) id],
+                [((CRMEntityReference*)value) logicalName]];
     }
     
     return @"";

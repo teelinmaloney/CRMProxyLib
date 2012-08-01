@@ -16,7 +16,7 @@
 - (NSString *)buildAuthRequestForUserName:(NSString *)userName andPassword:(NSString *)password;
 - (NSString *)buildCreateRequest:(id<CRMEntity>)model withSecurityToken:(CRMSecurityToken *)token;
 - (NSString *)buildUpdateRequest:(id<CRMEntity>)model withSecurityToken:(CRMSecurityToken *)token;
-- (NSString *)buildDeleteRequest:(NSString *)guid withSecurityToken:(CRMSecurityToken *)token;
+- (NSString *)buildDeleteRequest:(id<CRMEntity>)model withSecurityToken:(CRMSecurityToken *)token;
 - (NSString *)buildFetchRequest:(NSString *)fetchXml withSecurityToken:(CRMSecurityToken *)token;
 - (NSString *)buildRetrieveRequest:(NSString *)entityName entityId:(NSString *)entityId withSecurityToken:(CRMSecurityToken *)token;
 - (NSString *)buildRetrieveRequest:(NSString *)entityName entityId:(NSString *)entityId attributes:(NSArray *)attributes 

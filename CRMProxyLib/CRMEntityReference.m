@@ -8,6 +8,9 @@
 
 #import "CRMEntityReference.h"
 
+@implementation Guid
+@end
+
 @implementation CRMEntityReference
 @synthesize id = _id;
 @synthesize name = _name;

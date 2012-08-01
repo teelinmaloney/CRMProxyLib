@@ -19,9 +19,11 @@
 
 - (void)runTests;
 - (void)testCreate;
+- (void)testDelete:(NSString *)entityId;
 - (void)testEntityMetadata;
 - (void)testRetrieve;
 - (void)testRetrieveMultiple;
+- (void)testUpdate:(NSString *)entityId;
 - (void)testWhoAmI;
 
 @end
@@ -88,10 +90,12 @@
 - (void)runTests
 {
     [self testCreate];
+    //[self testUpdate:@"c1603050-a5da-e111-8298-00101828c71a"];
     //[self testRetrieve];
     //[self testRetrieveMultiple];
     //[self testWhoAmI];
     //[self testEntityMetadata];
+    //[self testSelector];
 }
 
 - (void)testCreate
@@ -109,6 +113,17 @@
     
     NSString *response = [service_ create:contact];
     NSLog(@"\n\nCreate Response: \n%@", response);
+    
+    [self testUpdate:response];
+    [self testDelete:response];
+}
+
+- (void)testDelete:(NSString *)entityId
+{
+    CRMContact *contact = [[CRMContact alloc]init];
+    [contact setContactid:(Guid *)entityId];
+    
+    [service_ delete:contact];
 }
 
 - (void)testRetrieve
@@ -132,6 +147,15 @@
     
     NSArray *posts = [service_ retrieveMultiple:fetch forClassName:@"CRMTime"];
     NSLog(@"%d", [posts count]);
+}
+
+- (void)testUpdate:(NSString *)entityId
+{
+    CRMContact *contact = [[CRMContact alloc]init];
+    [contact setContactid:(Guid *)entityId];
+    [contact setMiddlename:@"Q"];
+    
+    [service_ update:contact];
 }
 
 - (void)testWhoAmI

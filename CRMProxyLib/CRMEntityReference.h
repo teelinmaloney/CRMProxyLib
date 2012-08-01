@@ -8,8 +8,10 @@
 
 #import <Foundation/Foundation.h>
 
-typedef NSString Guid;
 typedef NSNumber OptionSet;
+
+@interface Guid : NSString
+@end
 
 @interface CRMEntityReference : NSObject
 @property (nonatomic, strong) NSString* id;
