@@ -36,8 +36,8 @@
     if (self) {
         // Custom initialization
         service_ = [[CRMOrgService alloc]
-            initWithOrganizationServiceUrl:@"https://int.crmqa.sonomapartners.com/arwqaclient/XRMServices/2011/Organization.svc" 
-            andSecureTokenServiceUrl:@"https://federation.crmqa.sonomapartners.com/adfs/services/trust/13/usernamemixed"];
+            initWithOrganizationServiceUrl:@"https://grapevine.sonomapartners.com/XRMServices/2011/Organization.svc" 
+            andSecureTokenServiceUrl:@"https://federation.sonomapartners.com/adfs/services/trust/13/usernamemixed"];
     }
     return self;
 }
@@ -100,22 +100,22 @@
 
 - (void)testCreate
 {
-//    CRMPost *post = [[CRMPost alloc]init];
-//    post.text = @"Test from OrgService";
-//    post.regardingobjectid = [[CRMEntityReference alloc]
-//                              initWithEntityName:@"systemuser" andId:@"FC6A0980-A1FF-DE11-A75B-00101826F7F4"];
-//    post.source = [NSNumber numberWithInt:2];
-//    
-//    NSString *response = [service_ create:post];
-    CRMContact *contact = [[CRMContact alloc]init];
-    [contact setFirstname:@"Joe"];
-    [contact setLastname:@"Framework"];
+    CRMPost *post = [[CRMPost alloc]init];
+    post.text = @"Hello from the iOS OrgService!";
+    post.regardingobjectid = [[CRMEntityReference alloc]
+                              initWithEntityName:@"systemuser" andId:@"FC6A0980-A1FF-DE11-A75B-00101826F7F4"];
+    post.source = [CRMOptionSet optionSetWithValue:2];
     
-    NSString *response = [service_ create:contact];
+    NSString *response = [service_ create:post];
+//    CRMContact *contact = [[CRMContact alloc]init];
+//    [contact setFirstname:@"Joe"];
+//    [contact setLastname:@"Framework"];
+//    
+//    NSString *response = [service_ create:contact];
     NSLog(@"\n\nCreate Response: \n%@", response);
     
-    [self testUpdate:response];
-    [self testDelete:response];
+    //[self testUpdate:response];
+    //[self testDelete:response];
 }
 
 - (void)testDelete:(NSString *)entityId

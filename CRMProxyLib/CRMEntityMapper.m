@@ -167,7 +167,7 @@
                         
                     } else if ([type isEqualToString:@"b:OptionSetValue"]) {
                         
-                        NSNumber *val = [NSNumber numberWithInt:[[[value childAtIndex:0]stringValue]intValue]];
+                        CRMOptionSet *val = [CRMOptionSet optionSetWithValue:[[[value childAtIndex:0]stringValue]intValue]];
                         [attributes setValue:val forKey:key]; continue;
                         
                     } else if ([type isEqualToString:@"d:int"]) {
@@ -319,6 +319,14 @@
                 "</b:value>", 
                 [((CRMEntityReference*)value) id],
                 [((CRMEntityReference*)value) logicalName]];
+    }
+    
+    if ([value isKindOfClass:[CRMOptionSet class]]) {
+        return [NSString stringWithFormat:@""
+                "<b:value i:type='a:OptionSetValue'>"
+                "<a:Value>%@</a:Value>"
+                "</b:value>",
+                [((CRMOptionSet*)value) value]];
     }
     
     return @"";

@@ -11,6 +11,16 @@
 @implementation Guid
 @end
 
+@implementation CRMOptionSet
+@synthesize value = _value;
++ (CRMOptionSet *)optionSetWithValue:(int)value
+{
+    CRMOptionSet *optionSet = [[CRMOptionSet alloc]init];
+    [optionSet setValue:[NSNumber numberWithInt:value]];
+    return optionSet;
+}
+@end
+
 @implementation CRMEntityReference
 @synthesize id = _id;
 @synthesize name = _name;

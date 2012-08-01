@@ -16,9 +16,9 @@
 @property (nonatomic, strong) CRMEntityReference* regardingobjectid;
 @property (nonatomic, strong) NSObject* regardingobjectownerid;
 @property (nonatomic, strong) CRMEntityReference* regardingobjectowningbusinessunit;
-@property (nonatomic, strong) NSNumber* source;
+@property (nonatomic, strong) CRMOptionSet* source;
 @property (nonatomic, strong) NSString* text;
 @property (nonatomic, strong) NSNumber* timezoneruleversionnumber;
-@property (nonatomic, strong) NSNumber* type;
+@property (nonatomic, strong) CRMOptionSet* type;
 @property (nonatomic, strong) NSNumber* utcconversiontimezonecode;
 @end
